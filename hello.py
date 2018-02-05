@@ -1,6 +1,6 @@
 def wsgi_application(environ, start_response):
     qs = environ['QUERY_STRING']
-    response_body = qs.replace('&','\n')
+    response_body = [bytes(i + '\n', 'ascii') for i in qs.split('&')]
 
     status = '200 OK'
     response_headers = [
@@ -8,4 +8,4 @@ def wsgi_application(environ, start_response):
         ('Content-Length', str(len(response_body)))
     ]
     start_response(status, response_headers)
-    return [response_body]
+    return response_body
